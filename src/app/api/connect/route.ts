@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { MCPService } from "@/lib/mcp-service";
+import { NextRequest, NextResponse } from 'next/server';
+import { mcpClient } from '@/lib/mcp-client';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,41 +8,26 @@ export async function POST(request: NextRequest) {
 
     if (!owner || !repo) {
       return NextResponse.json(
-        { error: "Owner and repo are required" },
+        { error: 'Owner and repo are required' },
         { status: 400 }
       );
     }
 
-    if (!token) {
-      return NextResponse.json(
-        {
-          error:
-            "GitHub token is required. Get a token at https://github.com/settings/tokens",
-        },
-        { status: 400 }
-      );
-    }
+    // Configure MCP client with repository details
+    await mcpClient.configure({ owner, repo, token });
 
-    const mcpService = new MCPService({ owner, repo, token });
-    const repoInfo = await mcpService.getRepoInfo();
+    // Get repository info through MCP
+    const repoInfo = await mcpClient.getRepoInfo(owner, repo);
 
     return NextResponse.json({
-      connection: { owner, repo, token },
+      success: true,
       data: repoInfo,
+      connection: { owner, repo, token },
     });
   } catch (error: any) {
-    if (error.status === 403 && error.message?.includes("rate limit")) {
-      return NextResponse.json(
-        {
-          error:
-            "GitHub API rate limit exceeded. Please provide a valid GitHub token to increase your rate limit from 60 to 5,000 requests per hour.",
-        },
-        { status: 429 }
-      );
-    }
-
+    console.error('Connect error:', error);
     return NextResponse.json(
-      { error: error.message || "Failed to connect to repository" },
+      { error: error.message || 'Failed to connect to repository' },
       { status: 500 }
     );
   }
