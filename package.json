@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run build:mcp && next dev",
+    "build": "npm run build:mcp && next build",
+    "build:mcp": "tsc src/mcp-server/github-server.ts --outDir mcp-server --module NodeNext --moduleResolution NodeNext --target ES2022 --esModuleInterop",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.10",
