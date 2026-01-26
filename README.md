@@ -1,34 +1,5 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## GitHub Repository Analyzer
-
-An AI-powered tool to analyze GitHub repositories using the GitHub API and Gemini AI.
-
-## Prerequisites
-
-### GitHub Personal Access Token (Required)
-
-⚠️ **Important:** You MUST provide a GitHub Personal Access Token to use this application.
-
-Without authentication:
-- **60 requests per hour** (rate limit will be hit quickly)
-- Error: "API rate limit exceeded for [your IP]"
-
-With authentication:
-- **5,000 requests per hour** 
-- Access to private repositories (if token has permissions)
-
-#### Creating a GitHub Token
-
-1. Go to [GitHub Settings → Personal Access Tokens](https://github.com/settings/tokens?type=beta)
-2. Click "Generate new token" (fine-grained token recommended)
-3. Set required permissions:
-   - **Repository Contents**: Read access (required)
-   - **Metadata**: Read access (included by default)
-4. Select repository access (all repositories or specific ones)
-5. Generate token and copy it (you won't see it again!)
-6. Use this token when connecting to a repository in the app
-
 ## Getting Started
 
 First, run the development server:

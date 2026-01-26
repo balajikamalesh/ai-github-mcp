@@ -116,7 +116,7 @@ export default function Home() {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div>
                   <label className="block text-white text-sm font-medium mb-2">
-                    Repository Owner <span className="text-red-400">*</span>
+                    Repository Owner
                   </label>
                   <input
                     type="text"
@@ -133,7 +133,7 @@ export default function Home() {
 
                 <div>
                   <label className="block text-white text-sm font-medium mb-2">
-                    Repository Name <span className="text-red-400">*</span>
+                    Repository Name
                   </label>
                   <input
                     type="text"
@@ -166,8 +166,7 @@ export default function Home() {
                   <p className="text-gray-400 text-xs mt-2">
                     <strong className="text-yellow-400">⚠️ Required:</strong>{" "}
                     Without a token, you'll hit GitHub's rate limit (60
-                    requests/hour). With a token, you get 5,000
-                    requests/hour.{" "}
+                    requests/hour). With a token, you get 5,000 requests/hour.{" "}
                   </p>
                 </div>
 

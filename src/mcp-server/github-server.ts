@@ -1,11 +1,11 @@
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
   Tool,
-} from "@modelcontextprotocol/sdk/types.js";
-import { Octokit } from "@octokit/rest";
+} from '@modelcontextprotocol/sdk/types.js';
+import { Octokit } from '@octokit/rest';
 
 interface GitHubConfig {
   token?: string;
@@ -21,14 +21,14 @@ class GitHubMCPServer {
   constructor() {
     this.server = new Server(
       {
-        name: "github-analyzer-mcp",
-        version: "1.0.0",
+        name: 'github-analyzer-mcp',
+        version: '1.0.0',
       },
       {
         capabilities: {
           tools: {},
         },
-      },
+      }
     );
 
     this.setupHandlers();
@@ -46,27 +46,27 @@ class GitHubMCPServer {
 
       try {
         switch (name) {
-          case "github_configure":
+          case 'github_configure':
             return await this.configure(args);
-          case "github_get_repo":
+          case 'github_get_repo':
             return await this.getRepo(args);
-          case "github_list_files":
+          case 'github_list_files':
             return await this.listFiles(args);
-          case "github_get_file_content":
+          case 'github_get_file_content':
             return await this.getFileContent(args);
-          case "github_list_commits":
+          case 'github_list_commits':
             return await this.listCommits(args);
-          case "github_get_commit":
+          case 'github_get_commit':
             return await this.getCommit(args);
-          case "github_list_pull_requests":
+          case 'github_list_pull_requests':
             return await this.listPullRequests(args);
-          case "github_get_pull_request":
+          case 'github_get_pull_request':
             return await this.getPullRequest(args);
-          case "github_get_repo_structure":
+          case 'github_get_repo_structure':
             return await this.getRepoStructure(args);
-          case "github_get_languages":
+          case 'github_get_languages':
             return await this.getLanguages(args);
-          case "github_get_contributors":
+          case 'github_get_contributors':
             return await this.getContributors(args);
           default:
             throw new Error(`Unknown tool: ${name}`);
@@ -75,7 +75,7 @@ class GitHubMCPServer {
         return {
           content: [
             {
-              type: "text",
+              type: 'text',
               text: JSON.stringify({
                 error: error.message,
                 details: error.response?.data || null,
@@ -91,179 +91,177 @@ class GitHubMCPServer {
   private getTools(): Tool[] {
     return [
       {
-        name: "github_configure",
-        description:
-          "Configure GitHub connection with owner, repo, and optional token",
+        name: 'github_configure',
+        description: 'Configure GitHub connection with owner, repo, and optional token',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
             owner: {
-              type: "string",
-              description: "Repository owner/organization",
+              type: 'string',
+              description: 'Repository owner/organization',
             },
             repo: {
-              type: "string",
-              description: "Repository name",
+              type: 'string',
+              description: 'Repository name',
             },
             token: {
-              type: "string",
-              description:
-                "GitHub personal access token (optional for public repos)",
+              type: 'string',
+              description: 'GitHub personal access token (optional for public repos)',
             },
           },
-          required: ["owner", "repo"],
+          required: ['owner', 'repo'],
         },
       },
       {
-        name: "github_get_repo",
-        description: "Get repository information",
+        name: 'github_get_repo',
+        description: 'Get repository information',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
           },
         },
       },
       {
-        name: "github_list_files",
-        description: "List files and directories at a given path",
+        name: 'github_list_files',
+        description: 'List files and directories at a given path',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
             path: {
-              type: "string",
-              description: "Path in the repository (default: root)",
-              default: "",
+              type: 'string',
+              description: 'Path in the repository (default: root)',
+              default: '',
             },
           },
         },
       },
       {
-        name: "github_get_file_content",
-        description: "Get the content of a specific file",
+        name: 'github_get_file_content',
+        description: 'Get the content of a specific file',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
             path: {
-              type: "string",
-              description: "Path to the file",
+              type: 'string',
+              description: 'Path to the file',
             },
           },
-          required: ["path"],
+          required: ['path'],
         },
       },
       {
-        name: "github_list_commits",
-        description: "List commits in the repository",
+        name: 'github_list_commits',
+        description: 'List commits in the repository',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
             limit: {
-              type: "number",
-              description: "Number of commits to retrieve",
+              type: 'number',
+              description: 'Number of commits to retrieve',
               default: 30,
             },
             sha: {
-              type: "string",
-              description: "Branch name or commit SHA",
+              type: 'string',
+              description: 'Branch name or commit SHA',
             },
           },
         },
       },
       {
-        name: "github_get_commit",
-        description: "Get detailed information about a specific commit",
+        name: 'github_get_commit',
+        description: 'Get detailed information about a specific commit',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
             sha: {
-              type: "string",
-              description: "Commit SHA",
+              type: 'string',
+              description: 'Commit SHA',
             },
           },
-          required: ["sha"],
+          required: ['sha'],
         },
       },
       {
-        name: "github_list_pull_requests",
-        description: "List pull requests in the repository",
+        name: 'github_list_pull_requests',
+        description: 'List pull requests in the repository',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
             state: {
-              type: "string",
-              enum: ["open", "closed", "all"],
-              description: "PR state filter",
-              default: "all",
+              type: 'string',
+              enum: ['open', 'closed', 'all'],
+              description: 'PR state filter',
+              default: 'all',
             },
             limit: {
-              type: "number",
-              description: "Number of PRs to retrieve",
+              type: 'number',
+              description: 'Number of PRs to retrieve',
               default: 30,
             },
           },
         },
       },
       {
-        name: "github_get_pull_request",
-        description: "Get detailed information about a specific pull request",
+        name: 'github_get_pull_request',
+        description: 'Get detailed information about a specific pull request',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
             number: {
-              type: "number",
-              description: "PR number",
+              type: 'number',
+              description: 'PR number',
             },
           },
-          required: ["number"],
+          required: ['number'],
         },
       },
       {
-        name: "github_get_repo_structure",
-        description: "Get the complete directory tree structure",
+        name: 'github_get_repo_structure',
+        description: 'Get the complete directory tree structure',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
           },
         },
       },
       {
-        name: "github_get_languages",
-        description: "Get programming languages used in the repository",
+        name: 'github_get_languages',
+        description: 'Get programming languages used in the repository',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
           },
         },
       },
       {
-        name: "github_get_contributors",
-        description: "Get repository contributors",
+        name: 'github_get_contributors',
+        description: 'Get repository contributors',
         inputSchema: {
-          type: "object",
+          type: 'object',
           properties: {
-            owner: { type: "string" },
-            repo: { type: "string" },
+            owner: { type: 'string' },
+            repo: { type: 'string' },
             limit: {
-              type: "number",
-              description: "Number of contributors",
+              type: 'number',
+              description: 'Number of contributors',
               default: 10,
             },
           },
@@ -278,7 +276,7 @@ class GitHubMCPServer {
     const token = args.token || this.config.token;
 
     if (!owner || !repo) {
-      throw new Error("Owner and repo must be configured");
+      throw new Error('Owner and repo must be configured');
     }
 
     if (!this.octokit || args.token) {
@@ -300,7 +298,7 @@ class GitHubMCPServer {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify({
             success: true,
             configured: {
@@ -322,7 +320,7 @@ class GitHubMCPServer {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify({
             name: data.name,
             fullName: data.full_name,
@@ -346,7 +344,7 @@ class GitHubMCPServer {
 
   private async listFiles(args: any) {
     const { owner, repo } = this.ensureOctokit(args);
-    const path = args.path || "";
+    const path = args.path || '';
 
     const { data } = await this.octokit!.repos.getContent({
       owner,
@@ -359,7 +357,7 @@ class GitHubMCPServer {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify(
             files.map((file) => ({
               name: file.name,
@@ -368,7 +366,7 @@ class GitHubMCPServer {
               size: file.size,
               sha: file.sha,
               url: file.html_url,
-            })),
+            }))
           ),
         },
       ],
@@ -385,19 +383,19 @@ class GitHubMCPServer {
     });
 
     if (Array.isArray(data)) {
-      throw new Error("Path is a directory, not a file");
+      throw new Error('Path is a directory, not a file');
     }
 
-    if (data.type !== "file") {
+    if (data.type !== 'file') {
       throw new Error(`Path is a ${data.type}, not a file`);
     }
 
-    const content = Buffer.from(data.content, "base64").toString("utf-8");
+    const content = Buffer.from(data.content, 'base64').toString('utf-8');
 
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify({
             path: data.path,
             content,
@@ -423,7 +421,7 @@ class GitHubMCPServer {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify(
             data.map((commit) => ({
               sha: commit.sha,
@@ -435,7 +433,7 @@ class GitHubMCPServer {
                 avatar: commit.author?.avatar_url,
               },
               url: commit.html_url,
-            })),
+            }))
           ),
         },
       ],
@@ -454,7 +452,7 @@ class GitHubMCPServer {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify({
             sha: data.sha,
             message: data.commit.message,
@@ -490,14 +488,14 @@ class GitHubMCPServer {
     const { data } = await this.octokit!.pulls.list({
       owner,
       repo,
-      state: args.state || "all",
+      state: args.state || 'all',
       per_page: args.limit || 30,
     });
 
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify(
             data.map((pr) => ({
               number: pr.number,
@@ -513,7 +511,7 @@ class GitHubMCPServer {
               // deletions: pr.deletions,
               // changedFiles: pr.changed_files,
               url: pr.html_url,
-            })),
+            }))
           ),
         },
       ],
@@ -529,17 +527,10 @@ class GitHubMCPServer {
       pull_number: args.number,
     });
 
-    // Fetch PR files with diffs
-    const { data: filesData } = await this.octokit!.pulls.listFiles({
-      owner,
-      repo,
-      pull_number: args.number,
-    });
-
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify({
             number: data.number,
             title: data.title,
@@ -559,15 +550,6 @@ class GitHubMCPServer {
             url: data.html_url,
             head: data.head.ref,
             base: data.base.ref,
-            files: filesData.map((file) => ({
-              filename: file.filename,
-              status: file.status,
-              additions: file.additions,
-              deletions: file.deletions,
-              changes: file.changes,
-              patch: file.patch,
-              previous_filename: file.previous_filename,
-            })),
           }),
         },
       ],
@@ -580,21 +562,21 @@ class GitHubMCPServer {
     const { data } = await this.octokit!.git.getTree({
       owner,
       repo,
-      tree_sha: "HEAD",
-      recursive: "true",
+      tree_sha: 'HEAD',
+      recursive: 'true',
     });
 
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify(
             data.tree.map((item) => ({
               path: item.path,
               type: item.type,
               size: item.size,
               sha: item.sha,
-            })),
+            }))
           ),
         },
       ],
@@ -612,7 +594,7 @@ class GitHubMCPServer {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify(data),
         },
       ],
@@ -631,14 +613,14 @@ class GitHubMCPServer {
     return {
       content: [
         {
-          type: "text",
+          type: 'text',
           text: JSON.stringify(
             data.map((contributor) => ({
               login: contributor.login,
               avatar: contributor.avatar_url,
               contributions: contributor.contributions,
               url: contributor.html_url,
-            })),
+            }))
           ),
         },
       ],
@@ -648,15 +630,15 @@ class GitHubMCPServer {
   async run() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-
+    
     // Log to stderr so it doesn't interfere with stdio communication
-    console.error("GitHub MCP Server running on stdio");
+    console.error('GitHub MCP Server running on stdio');
   }
 }
 
 // Start the server
 const server = new GitHubMCPServer();
 server.run().catch((error) => {
-  console.error("Server error:", error);
+  console.error('Server error:', error);
   process.exit(1);
 });
