@@ -19,6 +19,7 @@ import remarkGfm from "remark-gfm";
 import { usePullRequests } from "./hooks/use-get-pull-requests";
 import { usePullRequestDetails } from "./hooks/use-get-pull-request-details";
 import { useAnalyzePR } from "./hooks/use-analyze-pull-request";
+import { PullRequestType } from "@/types/pull-request";
 
 export default function PullRequestsPage() {
   const router = useRouter();
@@ -162,7 +163,7 @@ export default function PullRequestsPage() {
                   </p>
                 </div>
               ) : (
-                prs.map((pr, index: number) => (
+                prs.map((pr: PullRequestType, index: number) => (
                   <button
                     key={index}
                     onClick={() => handlePRClick(pr)}

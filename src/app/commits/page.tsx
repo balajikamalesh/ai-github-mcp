@@ -19,6 +19,7 @@ import remarkGfm from "remark-gfm";
 import { useCommits } from "./hooks/use-get-commits";
 import { useCommitDetails } from "./hooks/use-get-commit-details";
 import { useAnalyzeCommit } from "./hooks/use-get-analyze-commit";
+import { CommitType } from "@/types/commit";
 
 export default function CommitsPage() {
   const router = useRouter();
@@ -135,7 +136,7 @@ export default function CommitsPage() {
                   <Loader2 className="w-8 h-8 text-purple-400 animate-spin mx-auto" />
                 </div>
               ) : (
-                commits?.map((commit, index: number) => (
+                commits?.map((commit: CommitType, index: number) => (
                   <button
                     key={index}
                     onClick={() => handleCommitClick(commit)}

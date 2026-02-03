@@ -1,14 +1,16 @@
+"use client";
+
 import { apiClient } from "@/lib/api-client";
 import { useState } from "react";
 
 export function useStreamAnalysis() {
   const [isStreaming, setIsStreaming] = useState(false);
-  const [streamedContent, setStreamedContent] = useState('');
+  const [streamedContent, setStreamedContent] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const startStream = async (url: string, data?: any) => {
     setIsStreaming(true);
-    setStreamedContent('');
+    setStreamedContent("");
     setError(null);
 
     try {
@@ -24,7 +26,7 @@ export function useStreamAnalysis() {
   };
 
   const reset = () => {
-    setStreamedContent('');
+    setStreamedContent("");
     setError(null);
     setIsStreaming(false);
   };

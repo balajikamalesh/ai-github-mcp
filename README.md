@@ -1,5 +1,3 @@
-yarn dev
-
 # GitHub Repository Analyzer
 
 > An AI-powered tool to analyze GitHub repositories using the GitHub API and Gemini AI.
