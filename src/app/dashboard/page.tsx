@@ -156,7 +156,7 @@ export default function Dashboard() {
             </div>
           </Link>
 
-          <div className="bg-linear-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-lg rounded-xl p-6 border border-purple-500/50">
+          <div className="bg-linear-to-br from-purple-500/20 to-blue-500/20 backdrop-blur-lg rounded-xl p-4 border border-purple-500/50">
             <h3 className="text-xl font-semibold text-white mb-4">
               Quick Stats
             </h3>
